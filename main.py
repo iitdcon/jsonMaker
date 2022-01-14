@@ -12,3 +12,8 @@ while True:
     print("This is a test")
     break
 
+
+df = pd.read_csv("data/faculty.csv")
+print(df.head())    
+
+
