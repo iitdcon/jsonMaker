@@ -7,3 +7,8 @@ with open("data/faculty.json") as f:
 
 for i in data:
     print(i['name'])
+
+while True:
+    print("This is a test")
+    break
+
