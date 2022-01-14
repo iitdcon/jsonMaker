@@ -1,5 +1,9 @@
 import json
 import pandas as pd
 
+with open("data/faculty.json") as f:
+    data = json.load(f)
 
-# Well hello there 
+
+for i in data:
+    print(i['name'])
