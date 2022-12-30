@@ -1,57 +1,15 @@
-import json
+import os
 
 import pandas as pd
 
+datas = []
+for i in os.listdir("ExcelData/publications"):
+    data = pd.read_excel(f"ExcelData/publications/{i}")
+    datas.append(data)
 
-def processPGCourses():
-    ans = []
-    columns = ["id", "name", "credit", "description", "core"]
-    data = pd.read_csv("csvData/pgcourses.csv")
-    numCourses = data.shape[0]
-
-    for i in range(numCourses):
-        unit = {}
-        for j in columns:
-            unit[j] = data[j][i]
-        ans.append(unit)
-    result = json.dumps(ans, indent=4)
-    with open("data/pgcourses.json", "w") as f:
-        f.write(result)
-
-
-def processPhDCourses():
-    ans = []
-    columns = ["id", "name", "credit", "description"]
-    data = pd.read_csv("csvData/phdcourses.csv")
-    numCourses = data.shape[0]
-
-    for i in range(numCourses):
-        unit = {}
-        for j in columns:
-            unit[j] = data[j][i]
-        ans.append(unit)
-    result = json.dumps(ans, indent=4)
-    with open("data/phdcourses.json", "w") as f:
-        f.write(result)
-
-
-def processUGCourses():
-    ans = []
-    columns = ["id", "name", "credit", "description", "core"]
-    data = pd.read_csv("csvData/ugcourses.csv")
-    numCourses = data.shape[0]
-
-    for i in range(numCourses):
-        unit = {}
-        for j in columns:
-            unit[j] = data[j][i]
-        ans.append(unit)
-    result = json.dumps(ans, indent=4)
-    with open("data/ugcourses.json", "w") as f:
-        f.write(result)
-
-
-if __name__ == "__main__":
-    processPGCourses()
-    processPhDCourses()
-    processUGCourses()
+finalData = pd.concat(datas)
+finalData.columns = ["year", "citation", "type", "doi"]
+json_string = finalData.to_json(orient="records")
+parsed = json.loads(json_string)
+with open("data/publications.json", "w") as f:
+    f.write(json.dumps(parsed, indent=4))
