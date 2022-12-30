@@ -1,3 +1,4 @@
+import json
 import os
 
 import pandas as pd
@@ -8,6 +9,9 @@ for i in os.listdir("ExcelData/publications"):
     datas.append(data)
 
 finalData = pd.concat(datas)
+print(f"There were {len(finalData)}")
+finalData.drop_duplicates(keep="first", inplace=True)
+print(f"There are {len(finalData)}")
 finalData.columns = ["year", "citation", "type", "doi"]
 json_string = finalData.to_json(orient="records")
 parsed = json.loads(json_string)
